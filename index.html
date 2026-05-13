@@ -534,7 +534,9 @@ body { font-family: 'Poppins', sans-serif; background: #0A0A0F; color: #fff; ove
       <!-- Portfolio Card 1 -->
       <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" onclick="openModal('Cinematic Travel Edit', 'A breathtaking travel montage with cinematic color grading and smooth transitions.')">
         <div class="relative aspect-video overflow-hidden">
-          <video> src="vid1.mp4" alt="Cinematic Travel Edit" class="w-full h-full object-cover"></video>
+           <video width="640" height="360" controls>
+    <source src="video.mp4" type="video/mp4">
+</video>
           <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
             <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
               <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
