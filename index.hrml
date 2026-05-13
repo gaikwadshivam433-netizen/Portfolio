@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shivam Gaikwad — Professional Video Editor</title>
+<meta name="description" content="Shivam Gaikwad — Professional Video Editor specializing in cinematic edits, reels, YouTube videos, ads, and social media content.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        neon: { blue: '#00D4FF', purple: '#8B5CF6', pink: '#EC4899' },
+        dark: { 900: '#0A0A0F', 800: '#111118', 700: '#1A1A24', 600: '#252530' }
+      },
+      fontFamily: {
+        heading: ['Space Grotesk', 'sans-serif'],
+        body: ['Poppins', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+body { font-family: 'Poppins', sans-serif; background: #0A0A0F; color: #fff; overflow-x: hidden; }
+
+/* Loading Screen */
+#loader { position: fixed; inset: 0; z-index: 9999; background: #0A0A0F; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s, visibility 0.6s; }
+#loader.hide { opacity: 0; visibility: hidden; }
+.loader-ring { width: 60px; height: 60px; border: 3px solid transparent; border-top: 3px solid #00D4FF; border-right: 3px solid #8B5CF6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text { margin-top: 20px; font-family: 'Space Grotesk'; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(90deg, #00D4FF, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse-text 1.5s ease-in-out infinite; }
+@keyframes pulse-text { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* Cursor Glow */
+#cursor-glow { position: fixed; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, rgba(139,92,246,0.04) 40%, transparent 70%); pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.1s ease-out; }
+
+/* Gradient Blobs */
+.blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: float-blob 8s ease-in-out infinite; }
+.blob-1 { width: 400px; height: 400px; background: rgba(0,212,255,0.2); top: -100px; left: -100px; }
+.blob-2 { width: 350px; height: 350px; background: rgba(139,92,246,0.2); top: 200px; right: -100px; animation-delay: -3s; }
+.blob-3 { width: 300px; height: 300px; background: rgba(236,72,153,0.15); bottom: -50px; left: 30%; animation-delay: -5s; }
+@keyframes float-blob { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.05); } 66% { transform: translate(-20px, 20px) scale(0.95); } }
+
+/* Glassmorphism */
+.glass { background: rgba(255,255,255,0.04); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+.glass-strong { background: rgba(255,255,255,0.06); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1); }
+
+/* Neon Glow */
+.glow-blue { box-shadow: 0 0 20px rgba(0,212,255,0.15), 0 0 60px rgba(0,212,255,0.05); }
+.glow-purple { box-shadow: 0 0 20px rgba(139,92,246,0.15), 0 0 60px rgba(139,92,246,0.05); }
+.glow-border { box-shadow: 0 0 15px rgba(0,212,255,0.3), 0 0 45px rgba(139,92,246,0.15), inset 0 0 15px rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.3); }
+
+/* Scroll Reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-left.active { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-right.active { opacity: 1; transform: translateX(0); }
+.reveal-scale { opacity: 0; transform: scale(0.9); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-scale.active { opacity: 1; transform: scale(1); }
+
+/* Skill Bar */
+.skill-bar-fill { width: 0; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.skill-bar-fill.animate { width: var(--skill-width); }
+
+/* Scroll Indicator */
+@keyframes scroll-bounce { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(10px); opacity: 0.5; } }
+
+/* Navbar */
+.nav-scrolled { background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* Floating Elements */
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+@keyframes float-reverse { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(15px) rotate(-5deg); } }
+.float-1 { animation: float 4s ease-in-out infinite; }
+.float-2 { animation: float-reverse 5s ease-in-out infinite 0.5s; }
+.float-3 { animation: float 6s ease-in-out infinite 1s; }
+
+/* Portfolio Card Hover */
+.portfolio-card .portfolio-overlay { opacity: 0; transition: opacity 0.4s ease; }
+.portfolio-card:hover .portfolio-overlay { opacity: 1; }
+.portfolio-card .play-btn { transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.portfolio-card:hover .play-btn { transform: scale(1); }
+.portfolio-card img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.portfolio-card:hover img { transform: scale(1.08); }
+
+/* Service Card Hover */
+.service-card { transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease; }
+.service-card:hover { transform: translateY(-8px); box-shadow: 0 0 30px rgba(0,212,255,0.15), 0 0 80px rgba(139,92,246,0.08); border-color: rgba(0,212,255,0.3); }
+
+/* Pricing Highlight */
+.pricing-highlight { position: relative; }
+.pricing-highlight::before { content: ''; position: absolute; inset: -2px; border-radius: 24px; background: linear-gradient(135deg, #00D4FF, #8B5CF6, #EC4899, #00D4FF); background-size: 300% 300%; animation: gradient-rotate 4s ease infinite; z-index: -1; }
+@keyframes gradient-rotate { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* Testimonial Card */
+.testimonial-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(139,92,246,0.12); }
+
+/* Modal */
+.modal-backdrop { opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.modal-backdrop.show { opacity: 1; visibility: visible; }
+.modal-content { transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.modal-backdrop.show .modal-content { transform: scale(1); }
+
+/* Mobile Menu */
+.mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.mobile-menu.open { transform: translateX(0); }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0A0A0F; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00D4FF, #8B5CF6); border-radius: 3px; }
+
+/* Animated Gradient Text */
+.gradient-text { background: linear-gradient(135deg, #00D4FF 0%, #8B5CF6 50%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.gradient-text-animated { background: linear-gradient(135deg, #00D4FF, #8B5CF6, #EC4899, #00D4FF); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-rotate 4s ease infinite; }
+
+/* Timeline */
+.timeline-line { position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, #00D4FF, #8B5CF6, transparent); }
+.timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: #00D4FF; box-shadow: 0 0 10px rgba(0,212,255,0.5); position: absolute; left: 15px; top: 6px; }
+
+/* Stat Counter */
+.stat-number { font-variant-numeric: tabular-nums; }
+
+/* Button shine */
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg) translateX(-100%); transition: transform 0.6s ease; }
+.btn-shine:hover::after { transform: rotate(45deg) translateX(100%); }
+
+/* Input Focus */
+.form-input:focus { border-color: rgba(0,212,255,0.5); box-shadow: 0 0 15px rgba(0,212,255,0.1); }
+
+/* Particles */
+.particle { position: absolute; width: 2px; height: 2px; background: rgba(0,212,255,0.4); border-radius: 50%; animation: particle-float linear infinite; }
+@keyframes particle-float { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) translateX(50px); opacity: 0; } }
+
+/* Glow line */
+.glow-line { height: 1px; background: linear-gradient(90deg, transparent, #00D4FF, #8B5CF6, transparent); opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Shivam Gaikwad</div>
+</div>
+
+<!-- Cursor Glow -->
+<div id="cursor-glow"></div>
+
+<!-- Particles -->
+<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<!-- Navbar -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#hero" class="font-heading font-bold text-xl tracking-tight">
+      <span class="gradient-text">SG</span><span class="text-white/80">Edit</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="text-sm text-white/60 hover:text-white transition-colors duration-300 tracking-wide">About</a>
+      <a href="#services" class="text-sm text-white/60 hover:text-white transition-colors duration-300 tracking-wide">Services</a>
+      <a href="#portfolio" class="text-sm text-white/60 hover:text-white transition-colors duration-300 tracking-wide">Portfolio</a>
+      <a href="#testimonials" class="text-sm text-white/60 hover:text-white transition-colors duration-300 tracking-wide">Testimonials</a>
+      <a href="#pricing" class="text-sm text-white/60 hover:text-white transition-colors duration-300 tracking-wide">Pricing</a>
+      <a href="#contact" class="btn-shine px-5 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-neon-blue/30 hover:border-neon-blue/60 transition-all duration-300 text-white">Hire Me</a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-white/70 hover:text-white transition-colors">
+      <iconify-icon icon="mdi:menu" width="28"></iconify-icon>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-[60] bg-dark-900/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+  <button id="menu-close" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors">
+    <iconify-icon icon="mdi:close" width="28"></iconify-icon>
+  </button>
+  <a href="#about" class="mobile-link text-2xl font-heading font-semibold text-white/70 hover:text-white transition-colors">About</a>
+  <a href="#services" class="mobile-link text-2xl font-heading font-semibold text-white/70 hover:text-white transition-colors">Services</a>
+  <a href="#portfolio" class="mobile-link text-2xl font-heading font-semibold text-white/70 hover:text-white transition-colors">Portfolio</a>
+  <a href="#testimonials" class="mobile-link text-2xl font-heading font-semibold text-white/70 hover:text-white transition-colors">Testimonials</a>
+  <a href="#pricing" class="mobile-link text-2xl font-heading font-semibold text-white/70 hover:text-white transition-colors">Pricing</a>
+  <a href="#contact" class="mobile-link btn-shine mt-4 px-8 py-3 rounded-full text-lg font-medium bg-gradient-to-r from-neon-blue to-neon-purple text-dark-900">Hire Me</a>
+</div>
+
+<!-- Hero Section -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,212,255,0.04)_0%,transparent_70%)]"></div>
+  
+  <div class="max-w-7xl mx-auto px-6 w-full pt-24 pb-12">
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <!-- Left Content -->
+      <div class="flex-1 text-center lg:text-left z-10">
+        <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
+          <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+          <span class="text-xs text-white/60 tracking-wider uppercase font-medium">Available for Projects</span>
+        </div>
+        <h1 class="reveal font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight mb-6" style="transition-delay: 0.1s">
+          Crafting<br>
+          <span class="gradient-text-animated">Cinematic Stories</span><br>
+          Through Editing
+        </h1>
+        <p class="reveal text-base sm:text-lg text-white/50 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed font-light" style="transition-delay: 0.2s">
+          I'm Shivam Gaikwad — Professional Video Editor specializing in cinematic edits, reels, YouTube videos, ads, and social media content.
+        </p>
+        <div class="reveal flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12" style="transition-delay: 0.3s">
+          <a href="#portfolio" class="btn-shine group px-8 py-4 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple text-dark-900 font-semibold text-sm tracking-wide hover:shadow-[0_0_30px_rgba(0,212,255,0.3)] transition-all duration-400 flex items-center justify-center gap-2">
+            View My Work
+            <iconify-icon icon="mdi:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+          <a href="#contact" class="btn-shine px-8 py-4 rounded-full glass border-white/10 hover:border-neon-blue/40 text-white font-medium text-sm tracking-wide transition-all duration-400 flex items-center justify-center gap-2">
+            <iconify-icon icon="mdi:briefcase-outline" width="18"></iconify-icon>
+            Hire Me
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-4" style="transition-delay: 0.4s">
+          <div class="glass rounded-2xl p-4 text-center hover:border-neon-blue/30 transition-all duration-300">
+            <div class="stat-number text-2xl font-heading font-bold gradient-text" data-target="50">0</div>
+            <div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Projects+</div>
+          </div>
+          <div class="glass rounded-2xl p-4 text-center hover:border-neon-blue/30 transition-all duration-300">
+            <div class="stat-number text-2xl font-heading font-bold gradient-text" data-target="3">0</div>
+            <div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Years Exp.</div>
+          </div>
+          <div class="glass rounded-2xl p-4 text-center hover:border-neon-blue/30 transition-all duration-300">
+            <div class="text-2xl font-heading font-bold gradient-text">Fast</div>
+            <div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Delivery</div>
+          </div>
+          <div class="glass rounded-2xl p-4 text-center hover:border-neon-blue/30 transition-all duration-300">
+            <div class="text-2xl font-heading font-bold gradient-text">HD</div>
+            <div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Quality</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Image -->
+      <div class="flex-1 flex justify-center lg:justify-end z-10">
+        <div class="reveal-right relative">
+          <div class="absolute -inset-4 bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 rounded-3xl blur-2xl opacity-50"></div>
+          <div class="relative w-[280px] sm:w-[340px] lg:w-[400px] aspect-[3/4] rounded-3xl overflow-hidden glass-strong">
+            <img src="https://picsum.photos/seed/shivam-editor/400/533.jpg" alt="Shivam Gaikwad" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-900/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6">
+              <div class="glass rounded-xl px-4 py-3 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center">
+                  <iconify-icon icon="mdi:play" width="20" class="text-dark-900"></iconify-icon>
+                </div>
+                <div>
+                  <div class="text-xs font-semibold">Shivam Gaikwad</div>
+                  <div class="text-[10px] text-white/40">Video Editor</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Floating Elements -->
+          <div class="float-1 absolute -top-6 -right-6 glass rounded-2xl px-4 py-3 flex items-center gap-2">
+            <iconify-icon icon="mdi:movie-open" width="20" class="text-neon-blue"></iconify-icon>
+            <span class="text-xs font-medium">Cinematic</span>
+          </div>
+          <div class="float-2 absolute -bottom-4 -left-8 glass rounded-2xl px-4 py-3 flex items-center gap-2">
+            <iconify-icon icon="mdi:lightning-bolt" width="20" class="text-neon-purple"></iconify-icon>
+            <span class="text-xs font-medium">Fast Edits</span>
+          </div>
+          <div class="float-3 absolute top-1/2 -left-12 glass rounded-2xl px-4 py-3">
+            <iconify-icon icon="mdi:palette" width="20" class="text-neon-pink"></iconify-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+    <span class="text-[10px] text-white/30 uppercase tracking-[4px]">Scroll</span>
+    <div class="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1.5">
+      <div class="w-1 h-2 rounded-full bg-neon-blue" style="animation: scroll-bounce 1.5s ease-in-out infinite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="relative py-24 overflow-hidden">
+  <div class="blob blob-3"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:account" width="16" class="text-neon-blue"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">About Me</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        Who <span class="gradient-text">Am I?</span>
+      </h2>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-16">
+      <!-- Left: About Text + Timeline -->
+      <div class="flex-1">
+        <p class="reveal text-white/50 leading-relaxed mb-8 text-base">
+          Hi, I'm Shivam Gaikwad, a passionate video editor focused on creating visually engaging and high-retention content. I specialize in both long-form and short-form editing for creators, brands, YouTubers, and businesses.
+        </p>
+        <p class="reveal text-white/40 leading-relaxed mb-12 text-sm">
+          My editing style combines cinematic storytelling, smooth transitions, sound design, motion graphics, and engaging pacing to make content stand out.
+        </p>
+
+        <!-- Timeline -->
+        <div class="reveal relative pl-12 mb-12">
+          <div class="timeline-line"></div>
+          <div class="mb-8 relative">
+            <div class="timeline-dot"></div>
+            <div class="ml-4">
+              <div class="text-xs text-neon-blue tracking-wider uppercase mb-1">2021</div>
+              <div class="font-heading font-semibold text-sm">Started Video Editing Journey</div>
+              <div class="text-xs text-white/40 mt-1">Learned Premiere Pro, After Effects, and DaVinci Resolve</div>
+            </div>
+          </div>
+          <div class="mb-8 relative">
+            <div class="timeline-dot" style="background: #8B5CF6; box-shadow: 0 0 10px rgba(139,92,246,0.5);"></div>
+            <div class="ml-4">
+              <div class="text-xs text-neon-purple tracking-wider uppercase mb-1">2022</div>
+              <div class="font-heading font-semibold text-sm">First Major Clients</div>
+              <div class="text-xs text-white/40 mt-1">Started working with YouTubers and content creators</div>
+            </div>
+          </div>
+          <div class="mb-8 relative">
+            <div class="timeline-dot" style="background: #EC4899; box-shadow: 0 0 10px rgba(236,72,153,0.5);"></div>
+            <div class="ml-4">
+              <div class="text-xs text-neon-pink tracking-wider uppercase mb-1">2023</div>
+              <div class="font-heading font-semibold text-sm">Expanded to Short-Form Content</div>
+              <div class="text-xs text-white/40 mt-1">Reels, Shorts, TikTok — viral content specialist</div>
+            </div>
+          </div>
+          <div class="relative">
+            <div class="timeline-dot"></div>
+            <div class="ml-4">
+              <div class="text-xs text-neon-blue tracking-wider uppercase mb-1">2024</div>
+              <div class="font-heading font-semibold text-sm">Full-Time Professional Editor</div>
+              <div class="text-xs text-white/40 mt-1">50+ projects delivered, growing brand and agency partnerships</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Skills -->
+      <div class="flex-1">
+        <h3 class="reveal font-heading text-xl font-semibold mb-8">My <span class="gradient-text">Skills</span></h3>
+        <div class="space-y-6">
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">Premiere Pro</span>
+              <span class="text-xs text-neon-blue">95%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-blue to-neon-purple" style="--skill-width: 95%"></div>
+            </div>
+          </div>
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">After Effects</span>
+              <span class="text-xs text-neon-blue">85%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-purple to-neon-pink" style="--skill-width: 85%"></div>
+            </div>
+          </div>
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">DaVinci Resolve</span>
+              <span class="text-xs text-neon-blue">80%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-blue to-neon-purple" style="--skill-width: 80%"></div>
+            </div>
+          </div>
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">Color Grading</span>
+              <span class="text-xs text-neon-blue">90%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-pink to-neon-blue" style="--skill-width: 90%"></div>
+            </div>
+          </div>
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">Sound Design</span>
+              <span class="text-xs text-neon-blue">85%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-blue to-neon-purple" style="--skill-width: 85%"></div>
+            </div>
+          </div>
+          <div class="reveal skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/70">Motion Graphics</span>
+              <span class="text-xs text-neon-blue">75%</span>
+            </div>
+            <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="skill-bar-fill h-full rounded-full bg-gradient-to-r from-neon-purple to-neon-blue" style="--skill-width: 75%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Creative Elements -->
+        <div class="relative mt-12">
+          <div class="float-1 absolute top-0 right-0 glass rounded-xl px-3 py-2 text-xs text-white/50">
+            <iconify-icon icon="mdi:movie-filter" width="16" class="text-neon-blue mr-1"></iconify-icon>Cinematic
+          </div>
+          <div class="float-2 absolute bottom-4 right-12 glass rounded-xl px-3 py-2 text-xs text-white/50">
+            <iconify-icon icon="mdi:music-note" width="16" class="text-neon-purple mr-1"></iconify-icon>Sound Design
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(139,92,246,0.05)_0%,transparent_60%)]"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:cog" width="16" class="text-neon-purple"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">Services</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        What I <span class="gradient-text">Offer</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <!-- Service 1: Long Form -->
+      <div class="reveal service-card glass rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-neon-blue/10 to-transparent rounded-bl-full"></div>
+        <div class="relative">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 flex items-center justify-center mb-6">
+            <iconify-icon icon="mdi:movie-open-outline" width="28" class="text-neon-blue"></iconify-icon>
+          </div>
+          <h3 class="font-heading text-2xl font-bold mb-3">Long Form Video Editing</h3>
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-blue" width="18"></iconify-icon>YouTube Videos</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-blue" width="18"></iconify-icon>Podcasts</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-blue" width="18"></iconify-icon>Interviews</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-blue" width="18"></iconify-icon>Vlogs</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-blue" width="18"></iconify-icon>Documentary Style Edits</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div class="text-2xl font-heading font-bold gradient-text">₹500<span class="text-sm text-white/40 font-normal">/minute</span></div>
+            <a href="#contact" class="btn-shine px-5 py-2.5 rounded-full bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-white/10 hover:border-neon-blue/40 text-sm transition-all duration-300">Get Started</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 2: Short Form -->
+      <div class="reveal service-card glass rounded-3xl p-8 relative overflow-hidden" style="transition-delay: 0.1s">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-neon-purple/10 to-transparent rounded-bl-full"></div>
+        <div class="relative">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-r from-neon-purple/20 to-neon-pink/20 flex items-center justify-center mb-6">
+            <iconify-icon icon="mdi:cellphone-play" width="28" class="text-neon-purple"></iconify-icon>
+          </div>
+          <h3 class="font-heading text-2xl font-bold mb-3">Short Form Content Editing</h3>
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-purple" width="18"></iconify-icon>Instagram Reels</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-purple" width="18"></iconify-icon>YouTube Shorts</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-purple" width="18"></iconify-icon>TikTok Videos</li>
+            <li class="flex items-center gap-3 text-sm text-white/50"><iconify-icon icon="mdi:check-circle" class="text-neon-purple" width="18"></iconify-icon>Viral Social Edits</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div class="text-2xl font-heading font-bold gradient-text">₹1000<span class="text-sm text-white/40 font-normal">/video</span></div>
+            <a href="#contact" class="btn-shine px-5 py-2.5 rounded-full bg-gradient-to-r from-neon-purple/20 to-neon-pink/20 border border-white/10 hover:border-neon-purple/40 text-sm transition-all duration-300">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-blue/30 transition-all duration-300 group cursor-default">
+        <iconify-icon icon="mdi:motion-outline" width="28" class="text-neon-blue mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Motion Graphics</div>
+      </div>
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-purple/30 transition-all duration-300 group cursor-default" style="transition-delay:0.05s">
+        <iconify-icon icon="mdi:palette-outline" width="28" class="text-neon-purple mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Color Grading</div>
+      </div>
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-pink/30 transition-all duration-300 group cursor-default" style="transition-delay:0.1s">
+        <iconify-icon icon="mdi:surround-sound" width="28" class="text-neon-pink mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Sound Design</div>
+      </div>
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-blue/30 transition-all duration-300 group cursor-default" style="transition-delay:0.15s">
+        <iconify-icon icon="mdi:lightning-bolt" width="28" class="text-neon-blue mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Fast Turnaround</div>
+      </div>
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-purple/30 transition-all duration-300 group cursor-default" style="transition-delay:0.2s">
+        <iconify-icon icon="mdi:closed-caption-outline" width="28" class="text-neon-purple mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Trendy Captions</div>
+      </div>
+      <div class="reveal glass rounded-2xl p-5 text-center hover:border-neon-pink/30 transition-all duration-300 group cursor-default" style="transition-delay:0.25s">
+        <iconify-icon icon="mdi:transition" width="28" class="text-neon-pink mb-2 group-hover:scale-110 transition-transform"></iconify-icon>
+        <div class="text-xs text-white/50">Cinematic Transitions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="relative py-24 overflow-hidden">
+  <div class="blob blob-1" style="top: auto; bottom: -200px; left: auto; right: -100px;"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:play-box-multiple" width="16" class="text-neon-blue"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">Portfolio</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        My <span class="gradient-text">Work</span>
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Portfolio Card 1 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" onclick="openModal('Cinematic Travel Edit', 'A breathtaking travel montage with cinematic color grading and smooth transitions.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/travel-cinematic/600/340.jpg" alt="Cinematic Travel Edit" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-blue/20 backdrop-blur-sm border border-neon-blue/30 text-[10px] text-neon-blue uppercase tracking-wider">Travel</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">Cinematic Travel Edit</h4>
+          <p class="text-xs text-white/40">Breathtaking travel montage with cinematic grading</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Card 2 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" style="transition-delay:0.1s" onclick="openModal('YouTube Documentary Edit', 'Professional documentary-style edit with narrative pacing and sound design.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/documentary-edit/600/340.jpg" alt="YouTube Documentary Edit" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-purple/20 backdrop-blur-sm border border-neon-purple/30 text-[10px] text-neon-purple uppercase tracking-wider">Documentary</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">YouTube Documentary Edit</h4>
+          <p class="text-xs text-white/40">Professional documentary-style narrative edit</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Card 3 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" style="transition-delay:0.2s" onclick="openModal('Podcast Highlight Reel', 'Engaging podcast highlights with dynamic cuts and captions.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/podcast-highlight/600/340.jpg" alt="Podcast Highlight Reel" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-pink/20 backdrop-blur-sm border border-neon-pink/30 text-[10px] text-neon-pink uppercase tracking-wider">Podcast</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">Podcast Highlight Reel</h4>
+          <p class="text-xs text-white/40">Dynamic cuts with engaging captions</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Card 4 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" onclick="openModal('Instagram Viral Reel', 'Trendy, fast-paced reel edit designed for maximum engagement and virality.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/viral-reel/600/340.jpg" alt="Instagram Viral Reel" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-blue/20 backdrop-blur-sm border border-neon-blue/30 text-[10px] text-neon-blue uppercase tracking-wider">Reels</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">Instagram Viral Reel</h4>
+          <p class="text-xs text-white/40">Fast-paced edit for maximum engagement</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Card 5 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" style="transition-delay:0.1s" onclick="openModal('Product Commercial Edit', 'Sleek product commercial with premium motion graphics and color grading.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/product-commercial/600/340.jpg" alt="Product Commercial Edit" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-purple/20 backdrop-blur-sm border border-neon-purple/30 text-[10px] text-neon-purple uppercase tracking-wider">Commercial</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">Product Commercial Edit</h4>
+          <p class="text-xs text-white/40">Premium motion graphics & color grading</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Card 6 -->
+      <div class="reveal portfolio-card glass rounded-3xl overflow-hidden cursor-pointer group" style="transition-delay:0.2s" onclick="openModal('Music Video Edit', 'High-energy music video edit with beat-synced cuts and visual effects.')">
+        <div class="relative aspect-video overflow-hidden">
+          <img src="https://picsum.photos/seed/music-video-edit/600/340.jpg" alt="Music Video Edit" class="w-full h-full object-cover">
+          <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex items-center justify-center">
+            <div class="play-btn w-16 h-16 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <iconify-icon icon="mdi:play" width="32" class="text-dark-900 ml-1"></iconify-icon>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-neon-pink/20 backdrop-blur-sm border border-neon-pink/30 text-[10px] text-neon-pink uppercase tracking-wider">Music Video</div>
+        </div>
+        <div class="p-5">
+          <h4 class="font-heading font-semibold text-base mb-1">Music Video Edit</h4>
+          <p class="text-xs text-white/40">Beat-synced cuts & visual effects</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video Modal -->
+<div id="video-modal" class="modal-backdrop fixed inset-0 z-[70] bg-dark-900/90 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="modal-content glass-strong rounded-3xl max-w-3xl w-full overflow-hidden">
+    <div class="flex items-center justify-between p-6 border-b border-white/5">
+      <h3 id="modal-title" class="font-heading font-semibold text-lg"></h3>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors">
+        <iconify-icon icon="mdi:close" width="18"></iconify-icon>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="aspect-video bg-dark-800 rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden">
+        <img id="modal-thumb" src="" alt="" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="relative z-10 text-center">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 mx-auto shadow-[0_0_40px_rgba(0,212,255,0.3)]">
+            <iconify-icon icon="mdi:play" width="40" class="text-dark-900 ml-1"></iconify-icon>
+          </div>
+          <p class="text-xs text-white/30">Demo Video Placeholder</p>
+        </div>
+      </div>
+      <p id="modal-desc" class="text-sm text-white/50"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,212,255,0.04)_0%,transparent_60%)]"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:star" width="16" class="text-neon-blue"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">Testimonials</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        Client <span class="gradient-text">Reviews</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Testimonial 1 -->
+      <div class="reveal testimonial-card glass rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-neon-blue/10 to-transparent rounded-br-full"></div>
+        <div class="flex items-center gap-1 mb-4">
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+        </div>
+        <p class="text-sm text-white/50 leading-relaxed mb-6">"Shivam completely transformed my YouTube videos. Retention and engagement improved massively. His editing style is next level!"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center text-sm font-bold text-dark-900">A</div>
+          <div>
+            <div class="text-sm font-semibold">Arjun Mehta</div>
+            <div class="text-xs text-white/30">YouTuber • 500K+ Subs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="reveal testimonial-card glass rounded-3xl p-8 relative overflow-hidden" style="transition-delay:0.1s">
+        <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-neon-purple/10 to-transparent rounded-br-full"></div>
+        <div class="flex items-center gap-1 mb-4">
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+        </div>
+        <p class="text-sm text-white/50 leading-relaxed mb-6">"The reels were cinematic, trendy, and delivered on time. Amazing editing quality. My Instagram engagement skyrocketed!"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neon-purple to-neon-pink flex items-center justify-center text-sm font-bold text-dark-900">P</div>
+          <div>
+            <div class="text-sm font-semibold">Priya Sharma</div>
+            <div class="text-xs text-white/30">Instagram Creator • 200K+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="reveal testimonial-card glass rounded-3xl p-8 relative overflow-hidden" style="transition-delay:0.2s">
+        <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-neon-pink/10 to-transparent rounded-br-full"></div>
+        <div class="flex items-center gap-1 mb-4">
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+          <iconify-icon icon="mdi:star" class="text-yellow-400" width="16"></iconify-icon>
+        </div>
+        <p class="text-sm text-white/50 leading-relaxed mb-6">"Professional workflow and excellent communication. Highly recommended for anyone looking for quality video editing services."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neon-pink to-neon-blue flex items-center justify-center text-sm font-bold text-dark-900">R</div>
+          <div>
+            <div class="text-sm font-semibold">Rahul Verma</div>
+            <div class="text-xs text-white/30">Brand Owner • Startup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="relative py-24 overflow-hidden">
+  <div class="blob blob-2" style="top: -100px; right: -150px;"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:tag-outline" width="16" class="text-neon-purple"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">Pricing</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        Simple <span class="gradient-text">Pricing</span>
+      </h2>
+      <p class="reveal text-white/40 mt-4 text-sm max-w-md mx-auto">Transparent pricing with no hidden fees. Quality editing at affordable rates.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <!-- Package 1 -->
+      <div class="reveal glass rounded-3xl p-8 relative overflow-hidden service-card">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-neon-blue/5 to-transparent rounded-bl-full"></div>
+        <div class="relative">
+          <div class="text-xs text-neon-blue tracking-wider uppercase mb-4 font-medium">Package 1</div>
+          <h3 class="font-heading text-2xl font-bold mb-2">Long Form Editing</h3>
+          <div class="flex items-baseline gap-1 mb-6">
+            <span class="text-4xl font-heading font-bold gradient-text">₹500</span>
+            <span class="text-sm text-white/40">/minute</span>
+          </div>
+          <div class="h-px bg-white/5 mb-6"></div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-blue"></iconify-icon>Professional Editing</li>
+            <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-blue"></iconify-icon>Color Correction</li>
+            <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-blue"></iconify-icon>Sound Design</li>
+            <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-blue"></iconify-icon>Smooth Transitions</li>
+            <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-blue"></iconify-icon>HD Export</li>
+          </ul>
+          <a href="#contact" class="btn-shine block text-center px-6 py-3.5 rounded-full glass border-white/10 hover:border-neon-blue/40 font-medium text-sm transition-all duration-300">Choose Plan</a>
+        </div>
+      </div>
+
+      <!-- Package 2 (Highlighted) -->
+      <div class="reveal pricing-highlight rounded-3xl relative" style="transition-delay:0.1s">
+        <div class="glass rounded-3xl p-8 relative overflow-hidden h-full bg-dark-800">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-neon-purple/5 to-transparent rounded-bl-full"></div>
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple text-[10px] font-bold text-dark-900 uppercase tracking-wider">Popular</div>
+          <div class="relative">
+            <div class="text-xs text-neon-purple tracking-wider uppercase mb-4 font-medium">Package 2</div>
+            <h3 class="font-heading text-2xl font-bold mb-2">Short Form Content</h3>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="text-4xl font-heading font-bold gradient-text">₹1000</span>
+              <span class="text-sm text-white/40">/video</span>
+            </div>
+            <div class="h-px bg-white/5 mb-6"></div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-purple"></iconify-icon>Viral Style Editing</li>
+              <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-purple"></iconify-icon>Motion Graphics</li>
+              <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-purple"></iconify-icon>Captions</li>
+              <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-purple"></iconify-icon>Fast Paced Cuts</li>
+              <li class="flex items-center gap-3 text-sm text-white/60"><iconify-icon icon="mdi:check" width="20" class="text-neon-purple"></iconify-icon>Social Media Optimization</li>
+            </ul>
+            <a href="#contact" class="btn-shine block text-center px-6 py-3.5 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple text-dark-900 font-semibold text-sm hover:shadow-[0_0_30px_rgba(0,212,255,0.3)] transition-all duration-300">Choose Plan</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="relative py-24 overflow-hidden">
+  <div class="blob blob-3" style="bottom: -100px; left: -100px;"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.04)_0%,transparent_60%)]"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+        <iconify-icon icon="mdi:email-outline" width="16" class="text-neon-blue"></iconify-icon>
+        <span class="text-xs text-white/50 tracking-wider uppercase">Contact</span>
+      </div>
+      <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+        Let's <span class="gradient-text">Connect</span>
+      </h2>
+      <p class="reveal text-white/40 mt-4 text-sm max-w-md mx-auto">Ready to bring your vision to life? Let's create something amazing together.</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-12 max-w-5xl mx-auto">
+      <!-- Contact Form -->
+      <div class="flex-1">
+        <form id="contact-form" class="reveal space-y-5">
+          <div>
+            <label class="block text-xs text-white/40 mb-2 uppercase tracking-wider">Name</label>
+            <input type="text" placeholder="Your full name" class="form-input w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder-white/20 outline-none transition-all duration-300">
+          </div>
+          <div>
+            <label class="block text-xs text-white/40 mb-2 uppercase tracking-wider">Email</label>
+            <input type="email" placeholder="your@email.com" class="form-input w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder-white/20 outline-none transition-all duration-300">
+          </div>
+          <div>
+            <label class="block text-xs text-white/40 mb-2 uppercase tracking-wider">Budget</label>
+            <select class="form-input w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white/50 outline-none transition-all duration-300 appearance-none cursor-pointer">
+              <option value="" class="bg-dark-800">Select budget range</option>
+              <option value="5k-10k" class="bg-dark-800">₹5,000 - ₹10,000</option>
+              <option value="10k-25k" class="bg-dark-800">₹10,000 - ₹25,000</option>
+              <option value="25k-50k" class="bg-dark-800">₹25,000 - ₹50,000</option>
+              <option value="50k+" class="bg-dark-800">₹50,000+</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-white/40 mb-2 uppercase tracking-wider">Project Details</label>
+            <textarea rows="4" placeholder="Tell me about your project..." class="form-input w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder-white/20 outline-none transition-all duration-300 resize-none"></textarea>
+          </div>
+          <button type="submit" class="btn-shine w-full px-8 py-4 rounded-xl bg-gradient-to-r from-neon-blue to-neon-purple text-dark-900 font-semibold text-sm tracking-wide hover:shadow-[0_0_30px_rgba(0,212,255,0.3)] transition-all duration-400 flex items-center justify-center gap-2">
+            Let's Create Something Amazing
+            <iconify-icon icon="mdi:arrow-right" width="18"></iconify-icon>
+          </button>
+        </form>
+        <div id="form-success" class="hidden mt-4 glass rounded-xl p-4 text-center text-sm text-neon-blue">
+          <iconify-icon icon="mdi:check-circle" width="20" class="mr-1"></iconify-icon>
+          Message sent! I'll get back to you soon.
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="lg:w-80 space-y-6">
+        <div class="reveal glass rounded-2xl p-6 service-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+              <iconify-icon icon="mdi:instagram" width="24" class="text-pink-400"></iconify-icon>
+            </div>
+            <div>
+              <div class="text-sm font-semibold">Instagram</div>
+              <div class="text-xs text-white/40">@shivameditz</div>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-neon-blue hover:underline">Follow Me →</a>
+        </div>
+
+        <div class="reveal glass rounded-2xl p-6 service-card" style="transition-delay:0.1s">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+              <iconify-icon icon="mdi:whatsapp" width="24" class="text-green-400"></iconify-icon>
+            </div>
+            <div>
+              <div class="text-sm font-semibold">WhatsApp</div>
+              <div class="text-xs text-white/40">+91 98765 43210</div>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-neon-blue hover:underline">Message Me →</a>
+        </div>
+
+        <div class="reveal glass rounded-2xl p-6 service-card" style="transition-delay:0.2s">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 flex items-center justify-center">
+              <iconify-icon icon="mdi:email-outline" width="24" class="text-neon-blue"></iconify-icon>
+            </div>
+            <div>
+              <div class="text-sm font-semibold">Email</div>
+              <div class="text-xs text-white/40">shivam@email.com</div>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-neon-blue hover:underline">Send Email →</a>
+        </div>
+
+        <div class="reveal glass rounded-2xl p-6 service-card" style="transition-delay:0.3s">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 flex items-center justify-center">
+              <iconify-icon icon="mdi:linkedin" width="24" class="text-blue-400"></iconify-icon>
+            </div>
+            <div>
+              <div class="text-sm font-semibold">LinkedIn</div>
+              <div class="text-xs text-white/40">Shivam Gaikwad</div>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-neon-blue hover:underline">Connect →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="relative pt-16 pb-8 overflow-hidden">
+  <div class="glow-line mb-12"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
+      <!-- Logo & Tagline -->
+      <div class="max-w-xs">
+        <a href="#hero" class="font-heading font-bold text-2xl tracking-tight inline-block mb-3">
+          <span class="gradient-text">SG</span><span class="text-white/80">Edit</span>
+        </a>
+        <p class="text-xs text-white/30 leading-relaxed">Professional video editing services for creators, brands, and businesses. Crafting cinematic stories that captivate.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-xs text-white/50 uppercase tracking-wider mb-4 font-medium">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="#about" class="text-sm text-white/30 hover:text-white transition-colors">About</a></li>
+          <li><a href="#services" class="text-sm text-white/30 hover:text-white transition-colors">Services</a></li>
+          <li><a href="#portfolio" class="text-sm text-white/30 hover:text-white transition-colors">Portfolio</a></li>
+          <li><a href="#pricing" class="text-sm text-white/30 hover:text-white transition-colors">Pricing</a></li>
+          <li><a href="#contact" class="text-sm text-white/30 hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="text-xs text-white/50 uppercase tracking-wider mb-4 font-medium">Services</h4>
+        <ul class="space-y-2">
+          <li><span class="text-sm text-white/30">YouTube Editing</span></li>
+          <li><span class="text-sm text-white/30">Reels & Shorts</span></li>
+          <li><span class="text-sm text-white/30">Color Grading</span></li>
+          <li><span class="text-sm text-white/30">Motion Graphics</span></li>
+          <li><span class="text-sm text-white/30">Sound Design</span></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h4 class="text-xs text-white/50 uppercase tracking-wider mb-4 font-medium">Connect</h4>
+        <div class="flex gap-3">
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center hover:border-neon-blue/30 transition-all duration-300 hover:bg-neon-blue/5">
+            <iconify-icon icon="mdi:instagram" width="18" class="text-white/40 hover:text-pink-400"></iconify-icon>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center hover:border-green-400/30 transition-all duration-300 hover:bg-green-400/5">
+            <iconify-icon icon="mdi:whatsapp" width="18" class="text-white/40 hover:text-green-400"></iconify-icon>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center hover:border-neon-blue/30 transition-all duration-300 hover:bg-neon-blue/5">
+            <iconify-icon icon="mdi:email-outline" width="18" class="text-white/40 hover:text-neon-blue"></iconify-icon>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center hover:border-blue-400/30 transition-all duration-300 hover:bg-blue-400/5">
+            <iconify-icon icon="mdi:linkedin" width="18" class="text-white/40 hover:text-blue-400"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="glow-line mb-8"></div>
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-xs text-white/20">© 2024 Shivam Gaikwad. All rights reserved.</p>
+      <p class="text-xs text-white/20">Crafted with <iconify-icon icon="mdi:heart" width="12" class="text-neon-pink inline"></iconify-icon> & Passion</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== LOADER =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    document.body.style.overflow = 'auto';
+    initReveal();
+    animateStats();
+  }, 1500);
+});
+
+// ===== CURSOR GLOW =====
+const cursorGlow = document.getElementById('cursor-glow');
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorGlow.style.left = mouseX + 'px';
+  cursorGlow.style.top = mouseY + 'px';
+});
+// Hide on mobile
+if ('ontouchstart' in window) cursorGlow.style.display = 'none';
+
+// ===== PARTICLES =====
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + 'vh';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.width = (1 + Math.random() * 2) + 'px';
+    p.style.height = p.style.width;
+    if (Math.random() > 0.5) p.style.background = 'rgba(139,92,246,0.3)';
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ===== NAVBAR SCROLL =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('nav-scrolled');
+  } else {
+    navbar.classList.remove('nav-scrolled');
+  }
+});
+
+// ===== MOBILE MENU =====
+const menuToggle = document.getElementById('menu-toggle');
+const menuClose = document.getElementById('menu-close');
+const mobileMenu = document.getElementById('mobile-menu');
+menuToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+// ===== SCROLL REVEAL =====
+function initReveal() {
+  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  revealElements.forEach(el => observer.observe(el));
+}
+
+// ===== ANIMATED STATS =====
+function animateStats() {
+  const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = parseInt(entry.target.dataset.target);
+        let current = 0;
+        const increment = target / 40;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            entry.target.textContent = target + '+';
+            clearInterval(timer);
+          } else {
+            entry.target.textContent = Math.floor(current) + '+';
+          }
+        }, 40);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statNumbers.forEach(el => observer.observe(el));
+}
+
+// ===== SKILL BARS =====
+const skillBars = document.querySelectorAll('.skill-bar-fill');
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate');
+      skillObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+skillBars.forEach(bar => skillObserver.observe(bar));
+
+// ===== VIDEO MODAL =====
+const modal = document.getElementById('video-modal');
+const modalTitle = document.getElementById('modal-title');
+const modalDesc = document.getElementById('modal-desc');
+const modalThumb = document.getElementById('modal-thumb');
+
+function openModal(title, desc) {
+  modalTitle.textContent = title;
+  modalDesc.textContent = desc;
+  modalThumb.src = `https://picsum.photos/seed/${title.replace(/\s/g, '-').toLowerCase()}/800/450.jpg`;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== CONTACT FORM =====
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const inputs = form.querySelectorAll('input, textarea, select');
+  let valid = true;
+  inputs.forEach(input => {
+    if (input.type !== 'submit' && !input.value.trim()) {
+      valid = false;
+      input.style.borderColor = 'rgba(239,68,68,0.5)';
+      setTimeout(() => input.style.borderColor = '', 2000);
+    }
+  });
+  if (valid) {
+    form.style.display = 'none';
+    document.getElementById('form-success').classList.remove('hidden');
+    setTimeout(() => {
+      form.style.display = 'block';
+      document.getElementById('form-success').classList.add('hidden');
+      inputs.forEach(input => { if (input.type !== 'submit') input.value = ''; });
+    }, 4000);
+  }
+});
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ===== ACTIVE NAV LINK =====
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 100;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    const link = document.querySelector(`nav a[href="#${id}"]`);
+    if (link) {
+      if (scrollY >= top && scrollY < top + height) {
+        link.classList.add('text-white');
+        link.classList.remove('text-white/60');
+      } else {
+        link.classList.remove('text-white');
+        link.classList.add('text-white/60');
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
